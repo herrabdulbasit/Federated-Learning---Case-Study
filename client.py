@@ -41,6 +41,7 @@ class FlowerClient(fl.client.NumPyClient):
 
 
     def evaluate(self, parameters, config):
+        print("Evaluating client")
         self.set_parameters(parameters)
         self.model.eval()
         test_loader = DataLoader(self.testset, batch_size=BATCH_SIZE, generator=torch.Generator().manual_seed(RANDOM_STATE), num_workers=0)

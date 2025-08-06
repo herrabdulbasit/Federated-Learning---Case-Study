@@ -1,6 +1,10 @@
 import flwr as fl
 import numpy as np
 import os
+import torch
+from flwr.common import ndarrays_to_parameters
+from model import FLModel
+from async_st import FedAsync
 
 EXPERIMENT_LOG_PATH = None
 CURRENT_ROUND = 0
@@ -18,6 +22,7 @@ def set_current_round(round_num: int):
     CURRENT_ROUND = round_num
 
 def weighted_average(metrics):
+    print("Metrics:", metrics)
     total_examples = sum([num_examples for num_examples, _ in metrics])
 
     def avg(key):
@@ -56,11 +61,23 @@ strategy_sync = fl.server.strategy.FedAvg(
     evaluate_metrics_aggregation_fn=weighted_average
 )
 
-strategy_async = fl.server.strategy.FedAvg(
-    fraction_fit=0.2,  # Only ~1 of 5 clients per round
-    min_fit_clients=1,
-    min_available_clients=5,
-    evaluate_metrics_aggregation_fn=weighted_average,
+
+
+model = FLModel()
+
+
+def get_initial_parameters(model):
+    # Convert model weights to list of numpy arrays
+    weights = [val.cpu().numpy() for val in model.state_dict().values()]
+    return ndarrays_to_parameters(weights)
+
+initial_parameters = get_initial_parameters(model)
+
+strategy_async = FedAsync(
+    initial_parameters=initial_parameters,
+    learning_rate=0.2,
+    decay=0.99,
+    evaluate_metrics_aggregation_fn=weighted_average
 )
 
 strategy_hybrid = HybridStrategy(
