@@ -1,0 +1,18 @@
+[Round 0]
+f1_micro: 0.9992
+f1_macro: 0.8836
+f1_class_0: 0.9996
+f1_class_1: 0.7676
+
+[Round 0]
+f1_micro: 0.9991
+f1_macro: 0.8352
+f1_class_0: 0.9995
+f1_class_1: 0.6709
+
+[Round 0]
+f1_micro: 0.9993
+f1_macro: 0.8966
+f1_class_0: 0.9997
+f1_class_1: 0.7935
+
