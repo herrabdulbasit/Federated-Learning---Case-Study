@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# Set fixed values
 CLIENTS=5
 ROUNDS=3
 SEED=42
 
-# Define experiments as "strategy data"
 EXPERIMENTS=(
   "sync iid"
   "sync non-iid-weak"
@@ -23,7 +21,7 @@ for EXP in "${EXPERIMENTS[@]}"; do
   STRATEGY=$1
   DATA=$2
 
-  echo "▶Running experiment: strategy=$STRATEGY, data=$DATA"
+  echo "Running experiment: strategy=$STRATEGY, data=$DATA"
   python main.py \
     --strategy $STRATEGY \
     --data $DATA
@@ -32,4 +30,4 @@ for EXP in "${EXPERIMENTS[@]}"; do
   echo "--------------------------------------------"
 done
 
-echo "🎉 All experiments finished."
+echo "All experiments finished."
